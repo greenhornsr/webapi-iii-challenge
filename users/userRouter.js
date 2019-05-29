@@ -49,7 +49,7 @@ router.get('/:id', validateUserId, (req, res) => {
     res.status(200).json({ success: true, message: `${userfound.name} located!`, userfound })
 });
 
-router.get('/:id/posts',  (req, res) => {
+router.get('/:id/posts', validateUserId, (req, res) => {
     db.getUserPosts(req.params.id)
     .then(posts => {
         res.status(200).json({ success: true, message: 'Posts located!', posts })
