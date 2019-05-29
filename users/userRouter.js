@@ -7,12 +7,12 @@ const db = require('./userDb');
 
 
 
-router.post('/', (req, res) => {
-    const newuser = req.user;
+router.post('/', validateUser, (req, res) => {
+    const newuser = req.body;
+    // console.log(newuser)
     db.insert(newuser)
-    .then(res => {
-        const allusers = db.get()
-        res.status(200).json({ success: true, message: `${newuser} added successfully!`}, allusers)
+    .then(user => {
+        res.status(200).json({ success: true, message: `${newuser.name} added successfully!`, user })
     })
     .catch(err => {
         res.status(500).json({ success: false, message: 'bummer...', err })
@@ -72,7 +72,14 @@ function validateUserId(req, res, next) {
     } 
 
 function validateUser(req, res, next) {
-
+    console.log('im in validateUser')
+    if(!req.body){
+        res.status(400).json({ message: 'Missing user data'})
+    }else if(!req.body.name){
+        res.status(400).json({ message: "Missing required name field" })
+    }else{
+        next();
+    }
 };
 
 function validatePost(req, res, next) {

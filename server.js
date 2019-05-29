@@ -14,7 +14,7 @@ server.get('/', (req, res) => {
 //custom middleware
 function logger(req, res, next) {
   console.log(
-    `${req.method} request to route: ${req.url} at [${new Date().toISOString()}]`
+    `${req.method} request to route: ${req.originalUrl} at [${new Date().toISOString()}]`
   );
   next();
 };
